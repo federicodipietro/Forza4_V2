@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Forza4</string>
+	<string name="newGame">Nuova Partita</string>
+	<string name="Username">Username</string>
+	<string name="Password">Password</string>
+	<string name="Join">Accedi</string>
+	
+</resources>

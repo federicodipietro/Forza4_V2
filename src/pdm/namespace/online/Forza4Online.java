@@ -189,11 +189,13 @@ public class Forza4Online extends Activity implements MessageReceiver {
 			public void handleMessage(android.os.Message msg) {
 				switch (msg.what) {
 				case Forza4Online.SHOW_TOAST:
+					//visualizzo toast inviato dall'avversario
 					Toast.makeText(Forza4Online.this,
 							msg.getData().getString("toast"), Toast.LENGTH_LONG)
 							.show();
 					break;
 				case Forza4Online.REFRESH_VIEW: {
+					//aggiorno grafica
 					Tock.start();
 					fl.removeAllViews();
 
@@ -208,6 +210,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 					break;
 				}
 				case Forza4Online.NEW_GAME: {
+					
 					btnNew.setVisibility(FrameLayout.GONE);
 					matr = new int[6][7];
 					// scambio i giocatori
@@ -231,7 +234,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 				if (statoCorrente == Stato.WAIT_FOR_START
 						|| statoCorrente == Stato.WAIT_FOR_START_ACK) {
 					Toast.makeText(Forza4Online.this,
-							"Aspetta mossa avversario", Toast.LENGTH_SHORT)
+							"Aspetta l'avversario", Toast.LENGTH_SHORT)
 							.show();
 					return false;
 				} else if (statoCorrente == Stato.USER_SELECTING) {
@@ -240,21 +243,23 @@ public class Forza4Online extends Activity implements MessageReceiver {
 					case MotionEvent.ACTION_UP: {
 						if (!win) {
 							touchx = (int) event.getX();
+							//calcola colonna dove inserire pedina
 							col = Functions.getCol(touchx, step);
 
 							if (matr[0][col] == 0) {
 								matr = Functions.inputMatr(matr, col, gio);
 								Tock.start();
-								// gio = !gio;
-
+								
 								// invia colonna selezionata*****
 								connection.send(nomeAvversario, "SELECTED:"
 										+ Integer.toString(col));
 								// *******
-
-								fl.removeAllViews();
+								
 								ind = new Indicatore(Forza4Online.this, touchx
 										- step / 2, 0, step, step / 2, gio);
+								
+								//aggiorna la grafica
+								fl.removeAllViews();
 								Functions.printG(matr, offsetX, offsetY + step
 										/ 2, diam, divx, divy,
 										Forza4Online.this, fl);
@@ -268,6 +273,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 
 							if (win) {
 								vittoria.start();
+								//dico all'avversario che ha perso
 								connection.send(nomeAvversario, "LOOOOSER");
 							}
 						} else {
@@ -321,7 +327,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 
 	}
 
-	// ridimensiona relative layuot
+	// ridimensiona relative layuot in funzione del framelayout
 	private void RedimLayouts(FrameLayout fl, int newWidth, int newHeigth,
 			View rl) {
 		lpFl = new LayoutParams(widthDisplay, newHeigth);
@@ -339,13 +345,15 @@ public class Forza4Online extends Activity implements MessageReceiver {
 
 		if (msg.equals("START")) {
 			if (statoCorrente == Stato.WAIT_FOR_START) {
-				// mando ACK
+				//mando ACK
 				connection.send(nomeAvversario, "STARTACK");
+				//creo un handler per inviare le notifiche attraverso un mess di toast
 				Message osmsg = handler.obtainMessage(Forza4Online.SHOW_TOAST);
 				Bundle b = new Bundle();
-				b.putString("toast", "Aspetta");
+				b.putString("toast", "Iniziamo");
 				osmsg.setData(b);
 				handler.sendMessage(osmsg);
+				//cambio lo stato del sistema
 				statoCorrente = Stato.WAIT_FOR_SELECT;
 				Log.d("Stato", statoCorrente.toString());
 			} else {
@@ -356,11 +364,11 @@ public class Forza4Online extends Activity implements MessageReceiver {
 		// ricevo start_ack e aspetto che avversario gioca
 		else if (msg.equals("STARTACK")) {
 			if (statoCorrente == Stato.WAIT_FOR_START_ACK) {
-
+				//l'avversario e' pronto a giocare quindi fermo il timer 
 				timer.cancel();
 
 				Log.w("ATTENZIONE", "Timer cancel");
-
+				//cambio stato del sistema(faccio la prima mossa) 
 				statoCorrente = Stato.USER_SELECTING;
 				Log.d("Stato", statoCorrente.toString());
 				Toast.makeText(Forza4Online.this, "Tocca a te",
@@ -372,22 +380,25 @@ public class Forza4Online extends Activity implements MessageReceiver {
 			}
 		} else if (msg.startsWith("SELECTED")) {
 			if (statoCorrente == Stato.WAIT_FOR_SELECT) {
+				//vedo che colonna ha selezionato l'avversario
 				selectedCol = msg.split(":")[1];
-				Message osmsg = handler.obtainMessage(Forza4Online.SHOW_TOAST);
-				Bundle b = new Bundle();
-
+				//aggiorno la matrice
 				matr = Functions.inputMatr(matr, Integer.parseInt(selectedCol),
 						!gio);
-
-				b.putString("toast", "Tocca a te");
-				osmsg.setData(b);
-				handler.sendMessage(osmsg);
-
+				
 				// faccio aggiornare grafica
 				Message rfrMsg = handler
 						.obtainMessage(Forza4Online.REFRESH_VIEW);
 				handler.sendMessage(rfrMsg);
-
+				
+				//dico all'avversario che e' il mio turno
+				Message osmsg = handler.obtainMessage(Forza4Online.SHOW_TOAST);
+				Bundle b = new Bundle();
+				b.putString("toast", "Tocca a me");
+				osmsg.setData(b);
+				handler.sendMessage(osmsg);
+				
+				//vado in user_selecting(tocca a me)
 				statoCorrente = Stato.USER_SELECTING;
 				Log.d("Stato", statoCorrente.toString());
 			} else {
@@ -395,7 +406,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 						+ statoCorrente);
 			}
 		} else if (msg.equals("LOOOOSER")) {
-			
+			//invio mess di sconfitta all'avversario
 			Message msgLos = handler.obtainMessage(Forza4Online.SHOW_TOAST);
 			Bundle b = new Bundle();
 			b.putString("toast", "Hai perso :)");
@@ -405,10 +416,11 @@ public class Forza4Online extends Activity implements MessageReceiver {
 		} else if (msg.equals("NEW")) {
 			
 			connection.send(nomeAvversario, "NEWACK");
+			//chiamo il metodo per inizire una nuova partita
 			Message newMsg = handler.obtainMessage(Forza4Online.NEW_GAME);
 			handler.sendMessage(newMsg);
 		} else if (msg.equals("NEWACK")) {
-			
+			//invio un mess all'avversario per giocare una nuova partita
 			Message newMsg = handler.obtainMessage(Forza4Online.NEW_GAME);
 			handler.sendMessage(newMsg);
 		}
@@ -418,7 +430,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		//se acitvity non e' piu' visibile chiude la connnessione
+		//se acitvity non e' piu' visibile chiudo la connnessione
 		connection.close();
 		Log.d("stop f4 online","connessione chiusa");
 	}

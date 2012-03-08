@@ -14,12 +14,13 @@ public final class R {
         public static final int giallov2=0x7f020000;
         public static final int grigliav2=0x7f020001;
         public static final int ic_launcher=0x7f020002;
-        public static final int indicatorered=0x7f020003;
-        public static final int indicatoreyelw=0x7f020004;
-        public static final int offline_rid=0x7f020005;
-        public static final int online=0x7f020006;
-        public static final int rossov2=0x7f020007;
-        public static final int titolo=0x7f020008;
+        public static final int icona=0x7f020003;
+        public static final int indicatorered=0x7f020004;
+        public static final int indicatoreyelw=0x7f020005;
+        public static final int offline_rid=0x7f020006;
+        public static final int online=0x7f020007;
+        public static final int rossov2=0x7f020008;
+        public static final int titolo=0x7f020009;
     }
     public static final class id {
         public static final int btn2Player=0x7f060011;

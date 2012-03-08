@@ -1,6 +1,7 @@
 package pdm.namespace;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,7 +49,9 @@ public class TwoPlayers extends Activity{
 		setContentView(R.layout.forza4);
 		
 		 fl = (FrameLayout)findViewById(R.id.frLayLocal);
+		 fl.setBackgroundColor(Color.DKGRAY);
 	     rl = (RelativeLayout)findViewById(R.id.relLayLocal);
+	     rl.setBackgroundColor(Color.WHITE);
 	     ll = (LinearLayout)findViewById(R.id.linaerLayLocal);
 	     
 	     heigthDisplay = getWindowManager().getDefaultDisplay().getHeight();
@@ -80,15 +83,15 @@ public class TwoPlayers extends Activity{
 	     //*********************************
 	     
 	     //*****************per centrare pedine**************
-	     	//rapporto tra largh pedina e larghezza griglia*7
+	     	//rapporto tra largh pedina e larghezza griglia
 	     Double temp =0.79277108433733*step;
 	     diam=temp.floatValue();
 	        
-	      	//rapporto distanza bordo e primo buco e largh griglia*7
+	      	//rapporto distanza bordo e primo buco e largh griglia
 	     temp=0.320448192771084*step;
 	     offsetX=temp.floatValue();
 	        
-	        //rapporto distanza bordo e primo buco e altezza griglia*6
+	        //rapporto distanza bordo e primo buco e altezza griglia
 	     temp=0.30167597765363*step;
 	     offsetY=temp.floatValue();
 	        

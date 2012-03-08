@@ -9,6 +9,7 @@ import pdm.namespace.Indicatore;
 import pdm.namespace.Pedina;
 import pdm.namespace.R;
 import android.app.Activity;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -78,7 +79,9 @@ public class Forza4Online extends Activity implements MessageReceiver {
 		setContentView(R.layout.forza4online);
 
 		fl = (FrameLayout) findViewById(R.id.frLayOnline);
+		fl.setBackgroundColor(Color.DKGRAY);
 		rl = (RelativeLayout) findViewById(R.id.relLayOnline);
+		rl.setBackgroundColor(Color.WHITE);
 		ll = (LinearLayout) findViewById(R.id.linaerLayOnline);
 		btnNew = (Button) findViewById(R.id.btnNew);
 		// setto btnNew non visibile

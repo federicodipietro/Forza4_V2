@@ -22,12 +22,12 @@ public final class R {
         public static final int titolo=0x7f020008;
     }
     public static final class id {
-        public static final int btn2Player=0x7f060013;
-        public static final int btnJoin=0x7f060012;
+        public static final int btn2Player=0x7f060011;
+        public static final int btnJoin=0x7f060010;
         public static final int btnNew=0x7f060006;
-        public static final int btnOnline=0x7f060014;
-        public static final int etextPass=0x7f060011;
-        public static final int etextUser=0x7f06000f;
+        public static final int btnOnline=0x7f060012;
+        public static final int etextPass=0x7f06000f;
+        public static final int etextUser=0x7f06000d;
         public static final int frLayLocal=0x7f060001;
         public static final int frLayOnline=0x7f060008;
         public static final int imageView1=0x7f060005;
@@ -35,26 +35,25 @@ public final class R {
         public static final int linaerLayLocal=0x7f060000;
         public static final int linaerLayOnline=0x7f060007;
         public static final int linearLayout1=0x7f060004;
-        public static final int passtxView=0x7f060010;
-        public static final int progressBar1=0x7f06000c;
+        public static final int passtxView=0x7f06000e;
+        public static final int progressBar1=0x7f060013;
         public static final int relLayLocal=0x7f060002;
         public static final int relLayOnline=0x7f060009;
         public static final int relativeLayout1=0x7f06000b;
         public static final int scrollView1=0x7f060003;
-        public static final int textView1=0x7f06000d;
-        public static final int usertxView=0x7f06000e;
+        public static final int textView1=0x7f060014;
+        public static final int usertxView=0x7f06000c;
     }
     public static final class layout {
         public static final int forza4=0x7f030000;
         public static final int forza4online=0x7f030001;
-        public static final int listplayers=0x7f030002;
-        public static final int login=0x7f030003;
-        public static final int main=0x7f030004;
+        public static final int login=0x7f030002;
+        public static final int main=0x7f030003;
+        public static final int saerchplayers=0x7f030004;
     }
     public static final class raw {
-        public static final int lancio=0x7f040000;
-        public static final int tok=0x7f040001;
-        public static final int win=0x7f040002;
+        public static final int tok=0x7f040000;
+        public static final int win=0x7f040001;
     }
     public static final class string {
         public static final int Join=0x7f050004;

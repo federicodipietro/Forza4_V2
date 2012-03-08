@@ -1,6 +1,5 @@
 package pdm.namespace.online;
 
-
 import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.PacketListener;
@@ -10,10 +9,9 @@ import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 
-
 import android.util.Log;
 
-public class ConnectionManager implements PacketListener{
+public class ConnectionManager implements PacketListener {
 
 	public String TAG = "ppl.connection.manager";
 
@@ -24,10 +22,9 @@ public class ConnectionManager implements PacketListener{
 
 	private boolean connected = false;
 
-	public ConnectionManager(String nomeMio,String Password,MessageReceiver mr) {
+	public ConnectionManager(String nomeMio, String Password, MessageReceiver mr) {
 		super();
 		this.nomeMio = nomeMio;
-		//this.nomeAvversario = nomeDestinatario + "@ppl.eln.uniroma2.it";
 		this.mr = mr;
 
 		try {
@@ -46,21 +43,21 @@ public class ConnectionManager implements PacketListener{
 		}
 	}
 
-	//@Override
+	// @Override
 	public void processPacket(Packet pkt) {
 		Message msg = (Message) pkt;
-		
+
 		Log.d(TAG, "MSG RECV from:" + msg.getFrom() + " BODY:" + msg.getBody());
 		if (msg.getFrom().startsWith(nomeMio)) {
 			Log.d(TAG, "MSG DISCARDED coming from " + msg.getFrom()
 					+ "with body " + msg.getBody() + " myuser:" + nomeMio);
 		} else {
-			mr.receiveMessage(msg.getFrom(),msg.getBody());
+			mr.receiveMessage(msg.getFrom(), msg.getBody());
 		}
 	}
 
-	public void send(String Destinatario,String body) {
-		
+	public void send(String Destinatario, String body) {
+
 		Message msg = new Message();
 		this.nomeAvversario = Destinatario;
 		msg.setTo(nomeAvversario);
@@ -68,8 +65,8 @@ public class ConnectionManager implements PacketListener{
 		Log.d(TAG, "MSG SENT to:" + msg.getTo() + " BODY:" + msg.getBody());
 		connection.sendPacket(msg);
 	}
-	
-	public void close(){
+
+	public void close() {
 		connection.disconnect();
 	}
 

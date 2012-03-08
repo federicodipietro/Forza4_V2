@@ -29,7 +29,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 
 	private static final int SHOW_TOAST = 0;
 	private static final int REFRESH_VIEW = 1;
-	private static final int NEW_GAME=2;
+	private static final int NEW_GAME = 2;
 
 	LinearLayout ll;
 	FrameLayout fl;
@@ -80,15 +80,15 @@ public class Forza4Online extends Activity implements MessageReceiver {
 		fl = (FrameLayout) findViewById(R.id.frLayOnline);
 		rl = (RelativeLayout) findViewById(R.id.relLayOnline);
 		ll = (LinearLayout) findViewById(R.id.linaerLayOnline);
-		btnNew = (Button)findViewById(R.id.btnNew);
-		//setto btnNew non visibile
+		btnNew = (Button) findViewById(R.id.btnNew);
+		// setto btnNew non visibile
 		btnNew.setVisibility(FrameLayout.GONE);
 		btnNew.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				connection.send(nomeAvversario,"NEW");
+				connection.send(nomeAvversario, "NEW");
 			}
 		});
-		
+
 		// ***********souni****************
 		Tock = MediaPlayer.create(Forza4Online.this, R.raw.tok);
 		vittoria = MediaPlayer.create(Forza4Online.this, R.raw.win);
@@ -147,7 +147,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 		// ^^^^^^^*******************************************************************
 
 		// *******************CONNESSIONE*****************************************************
-		connection = new ConnectionManager(nomeMio, password,this);
+		connection = new ConnectionManager(nomeMio, password, this);
 		timer = new Timer();
 		TimerTask sendStart = new TimerTask() {
 
@@ -203,15 +203,17 @@ public class Forza4Online extends Activity implements MessageReceiver {
 					fl.addView(ind);
 					win = Functions.checkWin(matr, Forza4Online.this, win);
 					break;
-				}case Forza4Online.NEW_GAME:{
+				}
+				case Forza4Online.NEW_GAME: {
 					btnNew.setVisibility(FrameLayout.GONE);
-					matr = new int [6][7];
-					//scambio i giocatori
-					gio=!gio;
-					win=false;
+					matr = new int[6][7];
+					// scambio i giocatori
+					gio = !gio;
+					win = false;
 					fl.removeAllViews();
 					fl.addView(tabella);
-					Toast.makeText(Forza4Online.this,"Nuova Partita", Toast.LENGTH_SHORT).show();
+					Toast.makeText(Forza4Online.this, "Nuova Partita",
+							Toast.LENGTH_SHORT).show();
 					break;
 				}
 				default:
@@ -240,7 +242,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 							if (matr[0][col] == 0) {
 								matr = Functions.inputMatr(matr, col, gio);
 								Tock.start();
-								//gio = !gio;
+								// gio = !gio;
 
 								// invia colonna selezionata*****
 								connection.send(nomeAvversario, "SELECTED:"
@@ -257,20 +259,20 @@ public class Forza4Online extends Activity implements MessageReceiver {
 								fl.addView(ind);
 								win = Functions.checkWin(matr,
 										Forza4Online.this, win);
-								//Cambia stato
-								statoCorrente=Stato.WAIT_FOR_SELECT;
+								// Cambia stato
+								statoCorrente = Stato.WAIT_FOR_SELECT;
 							}
 
-							if (win){
+							if (win) {
 								vittoria.start();
-								connection.send(nomeAvversario,"LOOOOSER");
+								connection.send(nomeAvversario, "LOOOOSER");
 							}
-						} else{
+						} else {
 							Toast.makeText(Forza4Online.this,
 									"Partita conclusa", Toast.LENGTH_SHORT)
 									.show();
 							btnNew.setVisibility(FrameLayout.VISIBLE);
-									}
+						}
 					}
 						break;
 					case MotionEvent.ACTION_MOVE: {
@@ -301,11 +303,13 @@ public class Forza4Online extends Activity implements MessageReceiver {
 					return true;
 				} else {
 					if (!win)
-					Toast.makeText(Forza4Online.this, "Attendi il tuo turno",
-							Toast.LENGTH_SHORT).show();
-					else{ Toast.makeText(Forza4Online.this, "Partita conclusa",
-							Toast.LENGTH_SHORT).show();
-					      btnNew.setVisibility(FrameLayout.VISIBLE);
+						Toast.makeText(Forza4Online.this,
+								"Attendi il tuo turno", Toast.LENGTH_SHORT)
+								.show();
+					else {
+						Toast.makeText(Forza4Online.this, "Partita conclusa",
+								Toast.LENGTH_SHORT).show();
+						btnNew.setVisibility(FrameLayout.VISIBLE);
 					}
 					return false;
 				}
@@ -375,28 +379,33 @@ public class Forza4Online extends Activity implements MessageReceiver {
 				b.putString("toast", "Tocca a te");
 				osmsg.setData(b);
 				handler.sendMessage(osmsg);
-				
-				//faccio aggiornare grafica
-				Message rfrMsg = handler.obtainMessage(Forza4Online.REFRESH_VIEW);
+
+				// faccio aggiornare grafica
+				Message rfrMsg = handler
+						.obtainMessage(Forza4Online.REFRESH_VIEW);
 				handler.sendMessage(rfrMsg);
-				
+
 				statoCorrente = Stato.USER_SELECTING;
 				Log.d("Stato", statoCorrente.toString());
 			} else {
 				Log.e("ATTENZIONE", "Ricevuto SELECTED ma lo stato e' :"
 						+ statoCorrente);
 			}
-		}else if (msg.equals("LOOOOSER")){
+		} else if (msg.equals("LOOOOSER")) {
+			
 			Message msgLos = handler.obtainMessage(Forza4Online.SHOW_TOAST);
 			Bundle b = new Bundle();
 			b.putString("toast", "Hai perso :)");
 			msgLos.setData(b);
 			handler.sendMessage(msgLos);
-		}else if(msg.equals("NEW")){
+			
+		} else if (msg.equals("NEW")) {
+			
 			connection.send(nomeAvversario, "NEWACK");
 			Message newMsg = handler.obtainMessage(Forza4Online.NEW_GAME);
 			handler.sendMessage(newMsg);
-		}else if(msg.equals("NEWACK")){
+		} else if (msg.equals("NEWACK")) {
+			
 			Message newMsg = handler.obtainMessage(Forza4Online.NEW_GAME);
 			handler.sendMessage(newMsg);
 		}

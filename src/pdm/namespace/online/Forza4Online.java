@@ -207,6 +207,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 					fl.addView(tabella);
 					fl.addView(ind);
 					win = Functions.checkWin(matr, Forza4Online.this, win);
+					if(!win)Toast.makeText(Forza4Online.this, "Tocca a te", Toast.LENGTH_SHORT).show();
 					break;
 				}
 				case Forza4Online.NEW_GAME: {
@@ -220,6 +221,10 @@ public class Forza4Online extends Activity implements MessageReceiver {
 					fl.addView(tabella);
 					Toast.makeText(Forza4Online.this, "Nuova Partita",
 							Toast.LENGTH_SHORT).show();
+					if(statoCorrente==Stato.USER_SELECTING)
+						Toast.makeText(Forza4Online.this, "Fai la prima mossa", Toast.LENGTH_SHORT).show();
+					else if(statoCorrente==Stato.WAIT_FOR_SELECT)
+						Toast.makeText(Forza4Online.this, "Aspetta mossa avversario", Toast.LENGTH_SHORT).show();
 					break;
 				}
 				default:
@@ -350,7 +355,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 				//creo un handler per inviare le notifiche attraverso un mess di toast
 				Message osmsg = handler.obtainMessage(Forza4Online.SHOW_TOAST);
 				Bundle b = new Bundle();
-				b.putString("toast", "Iniziamo");
+				b.putString("toast", "Aspetta mossa avversario");
 				osmsg.setData(b);
 				handler.sendMessage(osmsg);
 				//cambio lo stato del sistema
@@ -366,14 +371,19 @@ public class Forza4Online extends Activity implements MessageReceiver {
 			if (statoCorrente == Stato.WAIT_FOR_START_ACK) {
 				//l'avversario e' pronto a giocare quindi fermo il timer 
 				timer.cancel();
-
 				Log.w("ATTENZIONE", "Timer cancel");
 				//cambio stato del sistema(faccio la prima mossa) 
 				statoCorrente = Stato.USER_SELECTING;
+				
+				//creo un handler per inviare le notifiche attraverso un mess di toast
+				Message osmsg = handler.obtainMessage(Forza4Online.SHOW_TOAST);
+				Bundle b = new Bundle();
+				b.putString("toast", "Fai la prima mossa");
+				osmsg.setData(b);
+				handler.sendMessage(osmsg);
+				
 				Log.d("Stato", statoCorrente.toString());
-				Toast.makeText(Forza4Online.this, "Tocca a te",
-						Toast.LENGTH_SHORT).show();
-
+			
 			} else {
 				Log.e("ATTENZIONE", "Ricevuto STARTACK ma lo stato e' "
 						+ statoCorrente);
@@ -391,13 +401,6 @@ public class Forza4Online extends Activity implements MessageReceiver {
 						.obtainMessage(Forza4Online.REFRESH_VIEW);
 				handler.sendMessage(rfrMsg);
 				
-				//dico all'avversario che e' il mio turno
-				Message osmsg = handler.obtainMessage(Forza4Online.SHOW_TOAST);
-				Bundle b = new Bundle();
-				b.putString("toast", "Tocca a me");
-				osmsg.setData(b);
-				handler.sendMessage(osmsg);
-				
 				//vado in user_selecting(tocca a me)
 				statoCorrente = Stato.USER_SELECTING;
 				Log.d("Stato", statoCorrente.toString());
@@ -406,7 +409,7 @@ public class Forza4Online extends Activity implements MessageReceiver {
 						+ statoCorrente);
 			}
 		} else if (msg.equals("LOOOOSER")) {
-			//invio mess di sconfitta all'avversario
+			//invio notifica di sconfitta
 			Message msgLos = handler.obtainMessage(Forza4Online.SHOW_TOAST);
 			Bundle b = new Bundle();
 			b.putString("toast", "Hai perso :)");
@@ -416,11 +419,11 @@ public class Forza4Online extends Activity implements MessageReceiver {
 		} else if (msg.equals("NEW")) {
 			
 			connection.send(nomeAvversario, "NEWACK");
-			//chiamo il metodo per inizire una nuova partita
+			//invio notifica per inizire una nuova partita
 			Message newMsg = handler.obtainMessage(Forza4Online.NEW_GAME);
 			handler.sendMessage(newMsg);
 		} else if (msg.equals("NEWACK")) {
-			//invio un mess all'avversario per giocare una nuova partita
+			//invio notifica per iniziare una nuova partita
 			Message newMsg = handler.obtainMessage(Forza4Online.NEW_GAME);
 			handler.sendMessage(newMsg);
 		}

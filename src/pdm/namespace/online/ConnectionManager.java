@@ -24,7 +24,7 @@ public class ConnectionManager implements PacketListener{
 
 	private boolean connected = false;
 
-	public ConnectionManager(String nomeMio,String Password) {
+	public ConnectionManager(String nomeMio,String Password,MessageReceiver mr) {
 		super();
 		this.nomeMio = nomeMio;
 		//this.nomeAvversario = nomeDestinatario + "@ppl.eln.uniroma2.it";
@@ -60,8 +60,9 @@ public class ConnectionManager implements PacketListener{
 	}
 
 	public void send(String Destinatario,String body) {
+		
 		Message msg = new Message();
-		nomeAvversario = Destinatario;
+		this.nomeAvversario = Destinatario;
 		msg.setTo(nomeAvversario);
 		msg.setBody(body);
 		Log.d(TAG, "MSG SENT to:" + msg.getTo() + " BODY:" + msg.getBody());

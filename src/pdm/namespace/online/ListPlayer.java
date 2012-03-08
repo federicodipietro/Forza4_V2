@@ -5,19 +5,23 @@ import java.util.TimerTask;
 
 import pdm.namespace.R;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ProgressBar;
 
-public class ListPlayer extends Activity implements MessageReceiver{
+public class ListPlayer extends Activity implements MessageReceiver {
 
 	ConnectionManager connection;
 	Timer timer;
 	enum Stato{
 		WAIT_FOR_HELLO,SEND_HELLO
 	}
+	
 	Stato statocorrente;
-	String username,password;
+	String username,password,Avversario;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,7 +30,7 @@ public class ListPlayer extends Activity implements MessageReceiver{
 		username = getIntent().getExtras().getString("user");
 		password = getIntent().getExtras().getString("pass");
 		
-		connection = new ConnectionManager(username, password);
+		connection = new ConnectionManager(username, password,this);
 		Log.d("LOGIN","Connesso");
 		
 		//mi metto in ascolto
@@ -50,26 +54,41 @@ public class ListPlayer extends Activity implements MessageReceiver{
 				
 			}
 		};
-		timer.schedule(ascolta, 20000L, 5000L);
+		timer.schedule(ascolta, 10000L, 7000L);
+				
 	}	
 	
-	public void receiveMessage(String From,String msg){
+	
+	
+	public void receiveMessage(String From, String msg){
 		//parte broadcast***********************
 		if (msg.equals("HELLO")){
 			connection.send(From,"HELLOACK");
-			Log.d("BROADCAST", "Ack inviato a "+From);
-		}else if (msg.equals("HELLOACK")){
 			
 			timer.cancel();
 			connection.close();
-			
 			Intent intent = new Intent(ListPlayer.this,Forza4Online.class);
 			intent.putExtra("Avversario", From);
 			intent.putExtra("user", username);
 			intent.putExtra("pass", password);
 			startActivity(intent);
-		}
-		//parte gioco*******************************
+			
+			
+			
+			Log.d("BROADCAST", "Ack inviato a "+From);
+			
+		}else if (msg.equals("HELLOACK")){
+			//aggiungo giocatore che sono online
+				
+			timer.cancel();
+			connection.close();
+			Intent intent = new Intent(ListPlayer.this,Forza4Online.class);
+			intent.putExtra("Avversario", From);
+			intent.putExtra("user", username);
+			intent.putExtra("pass", password);
+			startActivity(intent);
 		
+			Log.d("BROADCAST", "Ack ricevuto a "+From);
+		}
 	}
 }

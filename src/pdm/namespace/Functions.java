@@ -75,14 +75,14 @@ public class Functions {
 				temp=matr[j][i];
 				if (temp != 0)
 				{	cont=cont+1;
-					//orizontali
+					//orizzontali
 				if (i<4)
 					{
 							if(temp==matr[j][i+1] && temp==matr[j][i+2] 
 									&& temp==matr[j][i+3])
 						{
 								win=ChihaVinto(temp, context,win);
-								//if(!win)System.out.println("orizzontale da sx verso dx");
+								//("orizzontale da sx verso dx");
 								break;
 						}	
 				}else if (i>=4){
@@ -90,7 +90,7 @@ public class Functions {
 									temp==matr[j][i-3])
 							{
 								win=ChihaVinto(temp, context,win);
-								//if(!win)System.out.println("orizzontale da dx verso sx");
+								//("orizzontale da dx verso sx");
 								break;
 							}
 					}
@@ -100,7 +100,7 @@ public class Functions {
 						if (temp==matr[j+1][i] && temp==matr[j+2][i] && temp==matr[j+3][i]){
 							win=ChihaVinto(temp, context,win);
 						if(win){
-							//System.out.println("verticale");
+							//("verticale");
 						}
 						}
 					}

@@ -4,44 +4,41 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="match_parent" >
 
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
             android:src="@drawable/titolo" />
-
-    </LinearLayout>
-
-    <AbsoluteLayout
-        android:id="@+id/absoluteLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.19" >
-
-        <ImageButton
-            android:id="@+id/btnOnline"
-            android:layout_width="134dp"
-            android:layout_height="wrap_content"
-            android:layout_x="89dp"
-            android:layout_y="228dp"
-            android:contentDescription="Online"
-            android:src="@drawable/ic_launcher" />
 
         <ImageButton
             android:id="@+id/btn2Player"
-            android:layout_width="134dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_x="86dp"
-            android:layout_y="108dp"
+            android:layout_below="@+id/imageView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="44dp"
+            android:background="@android:color/background_dark"
             android:contentDescription="2 Giocatori"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/offline_rid" />
 
-    </AbsoluteLayout>
+        <ImageButton
+            android:id="@+id/btnOnline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn2Player"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/background_dark"
+            android:contentDescription="Online"
+            android:src="@drawable/online" />
+
+    </RelativeLayout>
 
 </LinearLayout>

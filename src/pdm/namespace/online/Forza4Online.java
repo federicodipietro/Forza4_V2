@@ -431,9 +431,8 @@ public class Forza4Online extends Activity implements MessageReceiver {
 
 	
 	@Override
-	protected void onStop() {
-		super.onStop();
-		//se acitvity non e' piu' visibile chiudo la connnessione
+	protected void onDestroy() {
+		super.onDestroy();
 		connection.close();
 		Log.d("stop f4 online","connessione chiusa");
 	}

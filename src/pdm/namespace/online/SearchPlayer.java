@@ -63,19 +63,22 @@ public class SearchPlayer extends Activity implements MessageReceiver {
 		if (msg.equals("HELLO")) {
 			connection.send(From, "HELLOACK");
 
-			timer.cancel();
-			connection.close();
-			Intent intent = new Intent(SearchPlayer.this, Forza4Online.class);
-			intent.putExtra("Avversario", From);
-			intent.putExtra("user", username);
-			intent.putExtra("pass", password);
-			startActivity(intent);
+			//timer.cancel();
+			//connection.close();
+			//Intent intent = new Intent(SearchPlayer.this, Forza4Online.class);
+			//intent.putExtra("Avversario", From);
+			//intent.putExtra("user", username);
+			//intent.putExtra("pass", password);
+			//startActivity(intent);
 
 			Log.d("BROADCAST", "Ack inviato a " + From);
 
 		} else if (msg.equals("HELLOACK")) {
 			// aggiungo giocatore che sono online
 
+			connection.send(From, "HELLOACK");
+			Log.d("BROADCAST", "Ack inviato a " + From);
+			
 			timer.cancel();
 			connection.close();
 			Intent intent = new Intent(SearchPlayer.this, Forza4Online.class);
@@ -84,7 +87,15 @@ public class SearchPlayer extends Activity implements MessageReceiver {
 			intent.putExtra("pass", password);
 			startActivity(intent);
 
-			Log.d("BROADCAST", "Ack ricevuto a " + From);
+			Log.d("BROADCAST", "Ack ricevuto da " + From);
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		timer.cancel();
+		connection.close();
+		Log.d("BROADCAST", "connessione chiusa");
 	}
 }
